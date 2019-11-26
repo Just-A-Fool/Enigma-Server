@@ -33,6 +33,9 @@ signupRouter.post('/signup', (req, res, next) => {
     //Validates email
     let emailError = signupService.validateEmail(xssE);
     if(emailError) return res.status(400).json({message: emailError});
+    //validates username
+    let usernameError = signupService.validateUsername(xssU);
+    if(usernameError) return res.status(400).json({message: usernameError});
 
     //Checks to see if the username provided is taken
     signupService.checkUsername(req.app.get('db'), xssU)

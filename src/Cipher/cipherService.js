@@ -10,11 +10,6 @@ const enigmaService = {
                 return rows[0];
             });
     },
-    // patchCipher(db, id, info) {
-    //     return db.from('ciphers')
-    //         .where({id})
-    //         .update(info);
-    // },
     deleteCipher(db, id, userid) {
         return db.from('ciphers')
             .where({id, userid})

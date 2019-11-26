@@ -15,7 +15,7 @@ describe('/login route', () => {
     before('setup db', () => {
         db = knex({
             client: 'pg',
-            connection: process.env.DB_TEST_URL
+            connection: process.env.DATABASE_TEST_URL
         });
 
         app.set('db', db);

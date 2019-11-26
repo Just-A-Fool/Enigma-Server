@@ -51,6 +51,15 @@ const signupService = {
         if(!REGEX_EMAIL.test(email)) {
             return 'Must provide valid email.';
         }
+        if(email.length > 40) {
+            return 'Email cannot exceed 40 characters';
+        }
+    },
+    //Makes sure Username passes tests 
+    validateUsername(username) {
+        if(username.length > 20) {
+            return 'Username cannot exceed 20 characters';
+        }
     },
     //Returns a hashed version of the password 
     hashPass(password) {

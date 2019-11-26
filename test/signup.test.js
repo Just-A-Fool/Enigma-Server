@@ -14,7 +14,7 @@ describe('/signup route', () => {
     before('setup db', () => {
         db = knex({
             client: 'pg',
-            connection: process.env.DB_TEST_URL
+            connection: process.env.DATABASE_TEST_URL
         });
 
         app.set('db', db);
@@ -112,6 +112,30 @@ describe('/signup route', () => {
                 })
                 .expect(400, {message: 'Must provide valid email.'});
         });
+        it('returns 400 if email is too long', () => {
+            return supertest(app)
+                .post('/signup')
+                .send({
+                    username: 'username',
+                    password: '12345678aassdfasDf',
+                    email: 'thisisnotanemailsjfinsfi@a;slkdfj;alskdjf;alsdfasidfnisnfisjdfijasdifjoasdjfoais'
+                })
+                .expect(400, {message: 'Email cannot exceed 40 characters'});
+        });
+
+
+        //username validation tests
+        it('returns 400 if username is too long', () => {
+            return supertest(app)
+                .post('/signup')
+                .send({
+                    username: 'usernameiswaytoolonginthiscaseandicannotletitbethatway',
+                    password: '12345678aassdfasDf',
+                    email: 'thi@tanes'
+                })
+                .expect(400, {message: 'Username cannot exceed 20 characters'});
+        });
+
 
 
 

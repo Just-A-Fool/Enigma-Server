@@ -32,7 +32,7 @@ cipherRouter.post('/cipher', (req, res, next) => {
         let current = req.body[str];
         let validRotors = ['I','II','III','IV','V'];
 
-        if(current.which && current.shift) {
+        if(current.which && (current.shift || current.shift === 0)) {
             if(validRotors.includes(current.which) && current.shift >=0 && current.shift <= 25){
                 //Do Nothing
             } else return res.status(400).json({ message: 'Must provide valid rotors' });
@@ -76,17 +76,6 @@ cipherRouter.post('/cipher', (req, res, next) => {
         })
         .catch(next);
 });
-
-// cipherRouter.patch('/api/:id', (req, res, next) => {
-//     let db = req.app.get('db');
-//     let id = 1;
-//     let edit = {};
-
-//     cipherService.patchCipher(db, xss(id), edit)
-//         .then(resp => {
-//         })
-//         .catch(next);
-// });
 
 cipherRouter.delete('/cipher/:id', (req, res, next) => {
     let db = req.app.get('db');

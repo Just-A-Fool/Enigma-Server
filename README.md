@@ -1,27 +1,78 @@
-# Aedan's Boilerplate
+# Aedan's Enigma Server
 
-## Set up
+Live app: https://aedan-enigma.now.sh/
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+Client GitHub: https://github.com/Just-A-Fool/Enigma-Client
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "boilerplate"`
-7. Delete this README or create your own. 
+## API
+_________
+Unprotected-Endpoints
+_____________________
 
-## Scripts
+`POST /signup` Creates new user if sucessful in signup attempt. Requires body to be an object with 'username', 'password' and 'email' keys. Returns 201 if sucessful.
 
-Start the application `npm start`
+- Username may not be more than 20 characters. 
 
-Start nodemon for the application `npm run dev`
+- Password must be between 8-32 characters and have an Upper/Lower/Number.
 
-Run the tests `npm test`
+- Email must be less than 40 characters and have an @ in it. 
 
-Run tests in watch mode `npm run testing`
+`POST /login` Logs in a user if supplied with correct information. Requires body to be an object with 'username' and 'password' keys. Returns 200 with JWT if sucessful. 
 
-## Deploying
+_____
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+Protected-Endpoints
+___________________
+
+`GET /cipher` Returns all saved ciphers for a user who is 'logged in'. Returns 200 if sucessful and an array of objects in the shape of: 
+
+    [{
+        id: 1,
+        data: (JSON string of cipher data.)
+    }]
+
+`POST /cipher` Saves a new cipher for a user who is 'logged in'. Returns 201 if sucessful. Requires the body to be an object in the shape of:
+
+    {
+        rotor1: {
+            which: 'I',
+            shift: 0
+        }
+        rotor2: {
+            which: 'II',
+            shift: 0
+        }
+        rotor3: {
+            which: 'III',
+            shift: 0
+        }
+        plug: {
+            A: 'B',
+            C: 'D'
+        }
+    }
+
+- "Which" values must be one of the following: I, II, III, IV, V.
+
+- "Shift" values must be a number between 0-25.
+
+- "Plug" key/value pairs must only be capital letters.
+
+`DELETE /cipher/:id` Deletes a specified cipher if the user is logged in and is allowed access to the cipher. Returns 204 if sucessful.
+
+___________
+Errors
+______
+
+- `All Errors` will return with an error status and an object with a message key. The error message is written there. 
+
+______
+
+
+## Summary
+
+This server allows for the saving/retrieval of Enigma settings called ciphers. Users are able to sign-up/log in and use this service. The data is stored in a PostgreSQL database. 
+
+## Technology Used
+
+Javascript, PostgreSQL, Express, Mocha, Chai
